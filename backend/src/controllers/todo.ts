@@ -61,13 +61,13 @@ const deleteTodo = async (req: Request, res: Response) => {
 
 const updateCompleteTodo = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
 
     if (!id) {
       return res.sendStatus(400).json({ error: "Id not found" });
     }
 
-    const todo = await getTodoById(id);
+    const todo = await getTodoById(id as string);
     
     if (!todo) {
       return res.status(404).json({ error: "Todo not found" });
