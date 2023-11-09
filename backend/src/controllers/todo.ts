@@ -49,9 +49,9 @@ const getAllCompletedTodos = async (req: Request, res: Response) => {
 
 const deleteTodo = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
 
-    const deletedTodo = await deleteTodoById(id);
+    const deletedTodo = await deleteTodoById(id as string);
 
     return res.json(deletedTodo);
   } catch (error) {

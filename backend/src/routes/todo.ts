@@ -7,5 +7,5 @@ export default (router: express.Router) => {
   router.get('/todos/completed', getAllCompletedTodos);
   router.post('/todo', createTodo);
   router.patch('/todo', updateCompleteTodo);
-  router.delete('/todo/:id', deleteTodo);
+  router.delete('/todo/delete', deleteTodo);
 }
