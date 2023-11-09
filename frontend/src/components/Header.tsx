@@ -23,9 +23,9 @@ const Header: FunctionComponent<HeaderProps> = () => {
   const { theme, isDarkMode, toggleTheme } = useTheme();
 
   return (
-    <header>
+    <header className="pb-7">
       <picture className="absolute -z-10">
-        <source media="(max-width: 1280px)" srcSet={mobileImages[theme]} />
+        <source media="(max-width: 640px)" srcSet={mobileImages[theme]} />
         <img src={desktopImages[theme]} alt="Header background image" />
       </picture>
       <div className="pt-11 px-6 flex justify-between">

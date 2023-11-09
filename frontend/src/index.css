@@ -5,7 +5,33 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary: 220, 98%, 61%;
+    --text: 235, 21%, 11%;
+    --background: 0, 0%, 98%;
+    --foreground: 236, 33%, 92%;
+    --secondary: 233, 11%, 84%;
+    --muted: 235, 19%, 35%;
+    --muted-1: 236, 9%, 61%;
+    --muted-2: 237, 14%, 26%;
+  }
+
+  .dark {
+    --primary: 220, 98%, 61%;
+    --text: 236, 33%, 92%;
+    --background: 235, 21%, 11%;
+    --foreground: 235, 24%, 19%;
+    --secondary: 234, 39%, 85%;
+    --muted: 234, 11%, 52%;
+    --muted-1: 233, 14%, 35%;
+    --muted-2: 237, 14%, 26%;
+  }
+
   html {
     font-family: 'Josefin Sans', sans-serif;
+  }
+
+  body {
+    @apply bg-foreground;
   }
 }
