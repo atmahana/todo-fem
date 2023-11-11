@@ -14,4 +14,5 @@ export const getCompletedTodos = () => TodoModel.find({ isCompleted: true });
 export const getTodoById = (id: string) => TodoModel.findById(id);
 export const createNewTodo = (values: Record<string, any>) => new TodoModel(values).save().then((todo) => todo.toObject());
 export const updateTodoById = (id: string, values: Record<string, any>) => TodoModel.findByIdAndUpdate(id, values);
-export const deleteTodoById = (id: string) => TodoModel.findOneAndDelete({ _id: id });  
+export const deleteTodoById = (id: string) => TodoModel.findOneAndDelete({ _id: id });
+export const deleteCompletedTodos = () => TodoModel.deleteMany({ isCompleted: true });

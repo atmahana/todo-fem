@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTodo, deleteTodo, getAllActiveTodos, getAllCompletedTodos, getAllTodos, updateCompleteTodo } from '../controllers/todo';
+import { createTodo, deleteAllCompletedTodos, deleteTodo, getAllActiveTodos, getAllCompletedTodos, getAllTodos, updateCompleteTodo } from '../controllers/todo';
 
 export default (router: express.Router) => {
   router.get('/todos', getAllTodos);
@@ -8,4 +8,5 @@ export default (router: express.Router) => {
   router.post('/todo', createTodo);
   router.patch('/todo', updateCompleteTodo);
   router.delete('/todo/delete', deleteTodo);
+  router.delete('/todos/delete', deleteAllCompletedTodos);
 }

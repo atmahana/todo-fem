@@ -1,4 +1,4 @@
-import { createNewTodo, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos } from '../models/Todo';
+import { createNewTodo, deleteCompletedTodos, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos } from '../models/Todo';
 import { Request, Response } from 'express';
 
 const createTodo = async (req: Request, res: Response) => {
@@ -68,7 +68,7 @@ const updateCompleteTodo = async (req: Request, res: Response) => {
     }
 
     const todo = await getTodoById(id as string);
-    
+
     if (!todo) {
       return res.status(404).json({ error: "Todo not found" });
     }
@@ -83,4 +83,14 @@ const updateCompleteTodo = async (req: Request, res: Response) => {
   }
 }
 
-export { getAllTodos, getAllActiveTodos, getAllCompletedTodos,createTodo, deleteTodo, updateCompleteTodo }
+const deleteAllCompletedTodos = async (req: Request, res: Response) => {
+  try {
+    const deletedTodos = await deleteCompletedTodos();
+
+    return res.json(deletedTodos);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export { getAllTodos, getAllActiveTodos, getAllCompletedTodos, createTodo, deleteTodo, updateCompleteTodo, deleteAllCompletedTodos }
