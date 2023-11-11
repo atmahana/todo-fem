@@ -7,24 +7,37 @@
 @layer base {
   :root {
     --primary: 220, 98%, 61%;
-    --text: 235, 21%, 11%;
     --background: 0, 0%, 98%;
-    --foreground: 236, 33%, 92%;
-    --secondary: 233, 11%, 84%;
-    --muted: 235, 19%, 35%;
-    --muted-1: 236, 9%, 61%;
-    --muted-2: 237, 14%, 26%;
+    --foreground: 0, 0%, 100%;
+    --input: 235, 19%, 35%;
+    --input-muted: 236, 9%, 61%;
+    --muted: 233, 11%, 84%;
+    --muted-foreground: 236, 9%, 61%; 
+    --border: 236, 33%, 92%;
+    
+    /* --VeryLightGray: hsl(0, 0%, 98%); */
+    /* --VeryLightGrayishBlue: hsl(236, 33%, 92%); */
+    /* --LightGrayishBlue: hsl(233, 11%, 84%); */
+    /* --DarkGrayishBlue: hsl(236, 9%, 61%); */
+    /* --VeryDarkGrayishBlue: hsl(235, 19%, 35%); */
   }
 
   .dark {
-    --primary: 220, 98%, 61%;
-    --text: 236, 33%, 92%;
     --background: 235, 21%, 11%;
     --foreground: 235, 24%, 19%;
-    --secondary: 234, 39%, 85%;
-    --muted: 234, 11%, 52%;
-    --muted-1: 233, 14%, 35%;
-    --muted-2: 237, 14%, 26%;
+    --input: 234, 39%, 85%; 
+    --input-muted: 234, 11%, 52%;
+    --muted: 233, 14%, 35%;
+    --muted-foreground: 234, 11%, 52%;
+    --border: 237, 14%, 26%;
+
+    /* --VeryDarkBlue: hsl(235, 21%, 11%); */
+    /* --VeryDarkDesaturatedBlue: hsl(235, 24%, 19%); */
+    /* --LightGrayishBlue: hsl(234, 39%, 85%); */
+    /* --LightGrayishBluehover: hsl(236, 33%, 92%); */
+    /* --DarkGrayishBlue: hsl(234, 11%, 52%); */
+    /* --VeryDarkGrayishBlue: hsl(233, 14%, 35%); */
+    /* --VeryDarkGrayishBlue: hsl(237, 14%, 26%); */
   }
 
   html {
@@ -32,6 +45,6 @@
   }
 
   body {
-    @apply bg-foreground;
+    @apply bg-background;
   }
 }

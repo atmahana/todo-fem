@@ -1,12 +1,12 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage, { loader } from "./routes/Home";
+import HomePage from "./routes/Home";
 import ActivePage from "./routes/Active";
 import CompletedPage from "./routes/Completed";
 import Layout from "./components/Layout";
 import { ThemeProvider } from "./ThemeContext";
-
-const queryClient = new QueryClient();
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { queryClient } from "./lib/queryClient";
 
 const router = createBrowserRouter([
   {
@@ -15,8 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
-        loader: () => loader(),
+        element: <HomePage/>,
       },
       {
         path: "/active",
@@ -36,6 +35,7 @@ function App() {
       <ThemeProvider>
         <RouterProvider router={router} />
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
   );
 }
