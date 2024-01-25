@@ -1,13 +1,9 @@
 import express from "express";
-import auth from "./auth";
-import users from "./users";
-import todo from "./todo";
+import todo from "./v1/todo";
 
 const router = express.Router();
 
 export default (): express.Router => {
-    auth(router);
-    users(router);
     todo(router);
     return router;
 };

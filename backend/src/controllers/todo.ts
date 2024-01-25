@@ -1,54 +1,82 @@
-import { createNewTodo, deleteCompletedTodos, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos } from '../models/Todo';
 import { Request, Response } from 'express';
+import { WithAuthProp } from '@clerk/clerk-sdk-node';
 
-const createTodo = async (req: Request, res: Response) => {
+import { createNewTodo, deleteCompletedTodos, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos } from "../models/Todo";
+import { clerkClient } from "../lib/clerkClient";
+
+const unauthenticated = (res: Response) => {
+  res.json({ code: 401, msg: "Session expired or invalid" });
+}
+
+const createTodo = async (req: WithAuthProp<Request>, res: Response) => {
   try {
+    if (!req.auth.sessionId) return unauthenticated(res)
+
     const { text } = req.body;
 
+    const user = await clerkClient.users.getUser(req.auth.userId);
+
     if (!text) {
-      return res.sendStatus(400);
+      return res.status(400).json({ error: 'Empty text input received', request: req.body });
     }
 
-    const todo = await createNewTodo({
+    const newTodo = createNewTodo({
       text,
       isCompleted: false,
+      userId: user.id
     });
 
-    return res.status(200).json(todo).end();
+    return res.status(200).json(newTodo).end();
   } catch (error) {
-    return res.sendStatus(500).json({ error: "Internal server error" });
+    console.log(error);
+    return res.status(500).json({ error: error.message });
   }
 }
 
-const getAllTodos = async (req: Request, res: Response) => {
+const getAllTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    const todos = await getTodos();
+    if (!req.auth.sessionId) return unauthenticated(res)
+
+    const user = await clerkClient.users.getUser(req.auth.userId);
+
+    const todos = await getTodos(user.id);
     return res.status(200).json(todos);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
 
-const getAllActiveTodos = async (req: Request, res: Response) => {
+const getAllActiveTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    const todos = await getActiveTodos();
+    if (!req.auth.sessionId) return unauthenticated(res)
+
+    const user = await clerkClient.users.getUser(req.auth.userId);
+
+    const todos = await getActiveTodos(user.id);
     return res.status(200).json(todos);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
 
-const getAllCompletedTodos = async (req: Request, res: Response) => {
+const getAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    const todos = await getCompletedTodos();
+    if (!req.auth.sessionId) return unauthenticated(res)
+
+    const user = await clerkClient.users.getUser(req.auth.userId);
+
+    const todos = await getCompletedTodos(user.id);
+
     return res.status(200).json(todos);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
 
-const deleteTodo = async (req: Request, res: Response) => {
+const deleteTodo = async (req: WithAuthProp<Request>, res: Response) => {
   try {
+    if (!req.auth.sessionId) return unauthenticated(res)
+
     const { id } = req.query;
 
     const deletedTodo = await deleteTodoById(id as string);
@@ -59,8 +87,10 @@ const deleteTodo = async (req: Request, res: Response) => {
   }
 }
 
-const updateCompleteTodo = async (req: Request, res: Response) => {
+const updateCompleteTodo = async (req: WithAuthProp<Request>, res: Response) => {
   try {
+    if (!req.auth.sessionId) return unauthenticated(res)
+
     const { id } = req.query;
 
     if (!id) {
@@ -79,13 +109,17 @@ const updateCompleteTodo = async (req: Request, res: Response) => {
     return res.status(200).json(todo).end();
 
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: error });
   }
 }
 
-const deleteAllCompletedTodos = async (req: Request, res: Response) => {
+const deleteAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    const deletedTodos = await deleteCompletedTodos();
+    if (!req.auth.sessionId) return unauthenticated(res)
+
+    const user = await clerkClient.users.getUser(req.auth.userId);
+
+    const deletedTodos = await deleteCompletedTodos(user.id);
 
     return res.json(deletedTodos);
   } catch (error) {

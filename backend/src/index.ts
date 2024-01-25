@@ -1,34 +1,57 @@
-import express from 'express';
 import http from 'http';
+import express, { Application } from 'express';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import compression from 'compression';
-import cors from 'cors';
-import mongoose from 'mongoose';
-import routes from './routes'
+import routes from './routes';
+import { connectToDB } from '../configs/db.config';
+import { LooseAuthProp } from '@clerk/clerk-sdk-node';
 
-require('dotenv').config();
+import 'dotenv/config';
 
-const app = express();
+const port = process.env.PORT || 5000;
 
-app.use(cors({
-    credentials: true,
-}));
+const app: Application = express();
 
-app.use(compression());
-app.use(cookieParser());
-app.use(bodyParser.json());
+declare global {
+  namespace Express {
+    interface Request extends LooseAuthProp {}
+  }
+}
+
+let startTime: Date | null = null;
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+app.use(express.json());
+
+app.use(function (_, res, next) {
+  res.setHeader('Access-Control-Allow-Headers', 'accept, authorization, content-type, x-requested-with');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Content-Type', 'application/json');
+  next();
+});
+
+app.use('/', routes());
+
+app.get('/status', async (req, res) => {
+  if (startTime) {
+    res.json({ code: 200, name: 'TodoFEM API', status: `Running`, startTime: `${startTime.toLocaleString('en-GB')} (Server Time - UTC)` });
+  } else {
+    res.statusCode = 500;
+    res.json({ code: 500, name: 'TodoFEM API', status: `Requires Attention` });
+  }
+})
 
 const server = http.createServer(app);
 
-server.listen(5000, () => {
-    console.log("Server running on http://localhost:5000/")
+server.listen(port, async () => {
+  console.log(`\x1b[33m→ Connecting to Database...\x1b[0m`);
+  await connectToDB();
+  console.log(`\x1b[32m → Connected.\x1b[0m`)
+  console.log(`\x1b[32mTodoFEM API listening on port ${port}\x1b[0m`);
+  startTime = new Date();
 });
-
-const MONGO_URL = process.env.MONGO_URL;
-
-mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL as string);
-mongoose.connection.on('error', (error: Error) => console.log(error));
-
-app.use('/', routes())
