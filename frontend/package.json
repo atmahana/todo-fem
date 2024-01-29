@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^4.30.3",
+    "@clerk/themes": "^1.7.9",
     "@tanstack/react-query": "^5.4.3",
     "@tanstack/react-query-devtools": "^5.8.1",
     "axios": "^1.6.0",
