@@ -1,9 +1,9 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { Content } from "../components/Content";
 
 interface CompletedPageProps {}
 
-const CompletedPage: FunctionComponent<CompletedPageProps> = () => (
+const CompletedPage: FC<CompletedPageProps> = () => (
   <Content type="completed" />
 );
 

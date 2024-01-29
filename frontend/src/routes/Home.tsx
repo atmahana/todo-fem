@@ -1,9 +1,9 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { Content } from "../components/Content";
 
 interface HomePageProps {}
 
-const HomePage: FunctionComponent<HomePageProps> = () => (
+const HomePage: FC<HomePageProps> = () => (
   <Content type="all" />
 );
 

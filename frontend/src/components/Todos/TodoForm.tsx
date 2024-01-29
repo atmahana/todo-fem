@@ -1,11 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { ChangeEvent, FormEvent, FunctionComponent, useState } from "react";
-import { queryClient } from "../../lib/queryClient";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
+import { useCreateTodo } from "../../hooks/useClerkQuery";
 
-interface TodoFormProps {}
-
-const TodoForm: FunctionComponent<TodoFormProps> = () => {
+const TodoForm: FC = () => {
+  const { isSignedIn } = useAuth();
+  const navigate = useNavigate();
+  const addTodoMutation = useCreateTodo();
   const [enteredText, setEnteredText] = useState<string>("");
 
   function changeHandler(event: ChangeEvent<HTMLInputElement>) {
@@ -15,33 +16,27 @@ const TodoForm: FunctionComponent<TodoFormProps> = () => {
     }, 0.5);
   }
 
-  const addTodoMutation = useMutation({
-    mutationKey: ["newTodo"],
-    mutationFn: (newTodo: string) => {
-      const url = "http://localhost:5000/todo";
-      const data = {
-        text: newTodo,
-      };
+  let submitHandler: (event: FormEvent) => Promise<void>;
 
-      return axios.post(url, data);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries();
-    },
-  });
-
-  const submitHandler = async (event: FormEvent) => {
-    event.preventDefault();
-    try {
-      addTodoMutation.mutate(enteredText);
-      setEnteredText("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (isSignedIn) {
+    submitHandler = async (event: FormEvent) => {
+      event.preventDefault();
+      try {
+        addTodoMutation.mutate(enteredText);
+        setEnteredText("");
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  } else {
+    submitHandler = async (event: FormEvent) => {
+      event.preventDefault();
+      navigate("/sign-in");
+    };
+  }
 
   return (
-    <form className="relative shadow-lg" onSubmit={submitHandler}>
+    <form className="relative shadow-sm" onSubmit={submitHandler}>
       <div className="border rounded-full w-5 aspect-square absolute top-1/2 -translate-y-1/2 left-5" />
       <input
         disabled={addTodoMutation.isPending}

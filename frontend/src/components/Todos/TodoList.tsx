@@ -1,14 +1,14 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
-import { todo } from "../../lib/types";
+import { Todo } from "../../lib/types";
 
 interface TodoListProps {
-  todos: todo[];
+  todos: Todo[];
   activeCount: number;
   clearCompletedHandler: () => void;
 }
 
-const TodoList: FunctionComponent<TodoListProps> = ({
+const TodoList: FC<TodoListProps> = ({
   todos,
   activeCount,
   clearCompletedHandler,
@@ -24,7 +24,7 @@ const TodoList: FunctionComponent<TodoListProps> = ({
   };
 
   return (
-    <ul className="bg-foreground grid divide-y divide-border rounded-md shadow-lg">
+    <ul className="bg-foreground grid divide-y divide-border rounded-md shadow-sm">
       {todos.map((todo, index) => (
         <TodoItem
           key={index}

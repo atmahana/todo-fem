@@ -1,10 +1,10 @@
-import { FunctionComponent } from "react";
-import { Outlet } from "react-router-dom";
+import { FC } from "react";
 import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Navbar from "./Navbar";
 
-const Layout: FunctionComponent = () => {
+const Layout: FC = () => {
   return (
     <>
       <Header />

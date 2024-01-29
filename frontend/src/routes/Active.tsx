@@ -1,9 +1,9 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { Content } from "../components/Content";
 
 interface ActivePageProps {}
 
-const ActivePage: FunctionComponent<ActivePageProps> = () => (
+const ActivePage: FC<ActivePageProps> = () => (
   <Content type="active"/>
 );
 

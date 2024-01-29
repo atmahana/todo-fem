@@ -1,12 +1,11 @@
-import { FunctionComponent } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { todo } from "../../lib/types";
-import IconX from "../../assets/icon-cross.svg";
-import { deleteTodo, updateTodo } from "../../lib/queries";
+import { FC } from "react";
+import { Todo } from "../../lib/types";
+import IconCross from "../../assets/icon-cross.svg";
+import { useUpdateTodo, useDeleteTodo } from "../../hooks/useClerkQuery";
 
-const TodoItem: FunctionComponent<todo> = ({ id, text, isCompleted }) => {
-  const updateMutation = useMutation(updateTodo(id));
-  const deleteMutation = useMutation(deleteTodo(id));
+const TodoItem: FC<Todo> = ({ id, text, isCompleted }) => {
+  const updateMutation = useUpdateTodo(id);
+  const deleteMutation = useDeleteTodo(id);
 
   const changeHandler = (id: string) => {
     updateMutation.mutate(id);
@@ -27,14 +26,14 @@ const TodoItem: FunctionComponent<todo> = ({ id, text, isCompleted }) => {
       />
       <label
         htmlFor={id}
-        className={`text-sm md:text-lg ${
+        className={`text-sm md:text-lg whitespace-pre-wrap ${
           isCompleted ? "text-muted line-through" : "text-input"
         }`}
       >
         {text}
       </label>
       <button className="ml-auto" onClick={() => deleteHandler(id)}>
-        <img src={IconX} className="w-3" />
+        <img src={IconCross} className="w-3" />
       </button>
     </li>
   );

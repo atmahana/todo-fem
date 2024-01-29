@@ -1,12 +1,12 @@
-import { FunctionComponent } from "react";
+import { FC } from "react";
 import { NavLink } from "react-router-dom";
 
 interface NavbarProps {}
 
-const Navbar: FunctionComponent<NavbarProps> = () => {
+const Navbar: FC<NavbarProps> = () => {
   return (
     <nav className="max-w-[589px] mx-auto px-6">
-      <ul className="bg-foreground w-full flex justify-center gap-5 rounded-md mt-5 py-3 font-bold shadow-lg text-sm">
+      <ul className="bg-foreground w-full flex justify-center gap-5 rounded-md mt-5 py-3 font-bold shadow-sm text-sm">
         <NavLink
           to="/"
           className={({ isActive }) =>
