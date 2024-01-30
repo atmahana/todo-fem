@@ -1,28 +1,27 @@
 import { FC } from "react";
-import TodoForm from "./Todos/TodoForm";
 import TodoList from "./Todos/TodoList";
 import { useSanitizeData } from "../hooks/useSanitizeData";
 import { useDeleteCompleted, useGetTodosQuery } from "../hooks/useClerkQuery";
+import Loader from "./Loader";
 
 interface ContentProps {
   type: "all" | "active" | "completed";
 }
 
 const Content: FC<ContentProps> = ({ type }) => {
-  const { data: activeTodos, isLoading: activeIsLoading } = useGetTodosQuery("active");
+  const { data: activeTodos } = useGetTodosQuery("active");
   const { data: todos, isError, isLoading } = useGetTodosQuery(type);
   const { sanitizedData: sanitizedTodos } = useSanitizeData(todos);
   const deleteCompletedMutation = useDeleteCompleted();
 
-  if (isLoading && activeIsLoading) {
-    return <p>Loading...</p>;
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (
     <div className="flex flex-col gap-4 md:gap-6">
-      <TodoForm />
       {isError ? <p>Something went wrong</p> : null}
-      {sanitizedTodos!.length === 0 ? (
+      {sanitizedTodos?.length === 0 ? (
         <div className="bg-foreground grid divide-y-2 rounded-md p-5 text-sm text-muted shadow-sm">
           No task(s) available
         </div>
