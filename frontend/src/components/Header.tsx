@@ -32,7 +32,7 @@ const Header: FC<HeaderProps> = () => {
         <source media="(max-width: 640px)" srcSet={mobileImages[theme]} />
         <img src={desktopImages[theme]} alt="Header background image" className="w-full" />
       </picture>
-      <div className="pt-11 lg:pt-[4.75rem] px-6 flex justify-between max-w-[589px] mx-auto">
+      <div className="pt-11 lg:pt-[4.75rem] px-6 flex justify-between md:max-w-[589px] 2xl:max-w-[748px] mx-auto">
         <h1 className="tracking-[0.45rem] md:tracking-[1.15rem] text-3xl md:text-4xl font-bold text-white">
           TODO
         </h1>

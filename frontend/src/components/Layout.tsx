@@ -11,7 +11,7 @@ const Layout: FC = () => {
     <>
       <Header />
       <Suspense fallback={<Loader />}>
-        <main className="px-6 max-w-[589px] mx-auto flex flex-col gap-4 md:gap-6">
+        <main className="px-6 md:max-w-[589px] 2xl:max-w-[748px] mx-auto flex flex-col gap-4 md:gap-6">
           <TodoForm />
           <Outlet />
         </main>
