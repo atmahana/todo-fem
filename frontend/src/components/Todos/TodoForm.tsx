@@ -44,7 +44,7 @@ const TodoForm: FC = () => {
         value={enteredText}
         type="text"
         placeholder="Create a new todo..."
-        className="px-[3.25rem] md:px-[4.5rem] py-3 md:py-5 w-full rounded-md placeholder:text-xs md:placeholder:text-lg bg-foreground border-none placeholder:text-input-muted text-input"
+        className="px-[3.25rem] md:px-[3.75rem] py-3 md:py-5 w-full rounded-md placeholder:text-xs md:placeholder:text-lg bg-foreground border-none placeholder:text-input-muted text-input"
       />
     </form>
   );

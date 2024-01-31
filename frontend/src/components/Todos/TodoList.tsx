@@ -33,12 +33,14 @@ const TodoList: FC<TodoListProps> = ({
           isCompleted={todo.isCompleted}
         />
       ))}
-      <li className="flex justify-between px-5 py-4 text-xs text-input-muted">
+      <li className="flex justify-between items-center px-5 py-4 text-xs md:text-sm text-input-muted">
         {currentPath !== "/completed" ? (
           <span>{activeCount} items left</span>
         ) : null}
         {currentPath !== "/active" ? (
-          <button onClick={clickHandler} className="ml-auto">Clear Completed</button>
+          <button onClick={clickHandler} className="hover:text-input">
+            Clear Completed
+          </button>
         ) : null}
       </li>
     </ul>
