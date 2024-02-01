@@ -35,17 +35,16 @@ export const useGetTodosQuery = (type: 'all' | 'active' | 'completed') => {
   });
 }
 
-
 const useCreateTodo = () => {
   const { getToken } = useAuth();
 
   return useMutation({
     mutationKey: ["newTodo"],
     mutationFn: async (newTodo: string) => {
-      const url = `${BACKEND_URI}/api/v1/todo`,
-        data = {
-          text: newTodo,
-        };
+      const url = `${BACKEND_URI}/api/v1/todo`;
+      const data = {
+        text: newTodo,
+      };
 
       return axios.post(url, data, {
         headers: {
@@ -60,7 +59,7 @@ const useCreateTodo = () => {
   })
 }
 
-const useUpdateTodo = (id: string) => {
+const useUpdateTodoStatus = (id: string) => {
   const { getToken } = useAuth();
 
   return useMutation({
@@ -69,6 +68,29 @@ const useUpdateTodo = (id: string) => {
       const url = `${BACKEND_URI}/api/v1/todo?id=${id}`;
 
       return await axios.patch(url, null, {
+        headers: {
+          Authorization: `Bearer ${await getToken()}`
+        }
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  })
+}
+
+const useUpdateTodoText = (id: string) => {
+  const { getToken } = useAuth();
+
+  return useMutation({
+    mutationKey: ["todo", id, { action: "update" }],
+    mutationFn: async (updatedTodo: string) => {
+      const url = `${BACKEND_URI}/api/v1/todo?id=${id}`;
+      const data = {
+        text: updatedTodo
+      }
+
+      return await axios.patch(url, data, {
         headers: {
           Authorization: `Bearer ${await getToken()}`
         }
@@ -122,4 +144,4 @@ const useDeleteCompleted = () => {
   })
 }
 
-export { useCreateTodo, useUpdateTodo, useDeleteTodo, useDeleteCompleted };
+export { useCreateTodo, useUpdateTodoStatus, useUpdateTodoText, useDeleteTodo, useDeleteCompleted };

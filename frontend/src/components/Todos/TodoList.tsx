@@ -1,48 +1,28 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import TodoItem from "./TodoItem";
 import { Todo } from "../../lib/types";
 
 interface TodoListProps {
   todos: Todo[];
-  activeCount: number;
-  clearCompletedHandler: () => void;
 }
 
-const TodoList: FC<TodoListProps> = ({
-  todos,
-  activeCount,
-  clearCompletedHandler,
-}) => {
-  const [currentPath, setCurrentPath] = useState("");
-
-  useEffect(() => {
-    setCurrentPath(window.location.pathname);
-  }, []);
-
-  const clickHandler = () => {
-    clearCompletedHandler();
-  };
+const TodoList: FC<TodoListProps> = ({ todos }) => {
+  const [editingTodoId, setEditingTodoId] = useState<string | null>(null);
 
   return (
-    <ul className="bg-foreground grid divide-y divide-border rounded-md shadow-sm">
+    <ul className="grid divide-y divide-border overflow-y-auto max-h-[55dvh]">
       {todos.map((todo, index) => (
         <TodoItem
           key={index}
           id={todo.id}
           text={todo.text}
           isCompleted={todo.isCompleted}
+          isEditing={todo.id === editingTodoId}
+          setIsEditing={() =>
+            setEditingTodoId((prev) => (prev === todo.id ? null : todo.id))
+          }
         />
       ))}
-      <li className="flex justify-between items-center px-5 py-4 text-xs md:text-sm text-input-muted">
-        {currentPath !== "/completed" ? (
-          <span>{activeCount} items left</span>
-        ) : null}
-        {currentPath !== "/active" ? (
-          <button onClick={clickHandler} className="hover:text-input">
-            Clear Completed
-          </button>
-        ) : null}
-      </li>
     </ul>
   );
 };

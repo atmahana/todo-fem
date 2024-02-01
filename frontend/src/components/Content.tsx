@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import TodoList from "./Todos/TodoList";
 import { useSanitizeData } from "../hooks/useSanitizeData";
 import { useDeleteCompleted, useGetTodosQuery } from "../hooks/useClerkQuery";
@@ -9,10 +9,20 @@ interface ContentProps {
 }
 
 const Content: FC<ContentProps> = ({ type }) => {
-  const { data: activeTodos } = useGetTodosQuery("active");
-  const { data: todos, isError, isLoading } = useGetTodosQuery(type);
-  const { sanitizedData: sanitizedTodos } = useSanitizeData(todos);
-  const deleteCompletedMutation = useDeleteCompleted();
+  const { data: activeTodos } = useGetTodosQuery("active"),
+    { data: todos, isError, isLoading } = useGetTodosQuery(type),
+    { sanitizedData: sanitizedTodos } = useSanitizeData(todos),
+    deleteCompletedMutation = useDeleteCompleted(),
+    [currentPath, setCurrentPath] = useState(""),
+    activeCount = activeTodos ? activeTodos.length : 0;
+
+  useEffect(() => {
+    setCurrentPath(window.location.pathname);
+  }, []);
+
+  const clickHandler = () => {
+    deleteCompletedMutation.mutate();
+  };
 
   if (isLoading) {
     return <Loader />;
@@ -26,11 +36,19 @@ const Content: FC<ContentProps> = ({ type }) => {
           No task(s) available
         </div>
       ) : (
-        <TodoList
-          todos={sanitizedTodos!}
-          activeCount={activeTodos ? activeTodos.length : 0}
-          clearCompletedHandler={deleteCompletedMutation.mutate}
-        />
+        <div className="bg-foreground shadow-sm rounded-md">
+          <TodoList todos={sanitizedTodos!} />
+          <div className="flex justify-between items-center px-5 py-4 text-xs md:text-sm text-input-muted border-t border-border">
+            {currentPath !== "/completed" ? (
+              <span>{activeCount} items left</span>
+            ) : null}
+            {currentPath !== "/active" ? (
+              <button onClick={clickHandler} className="hover:text-input ml-auto">
+                Clear Completed
+              </button>
+            ) : null}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -15,8 +15,8 @@
 
 .checkmark {
   position: absolute;
-  top: 0.5rem;
-  left: 0;
+  top: 1.125rem;
+  left: 1.25rem;
   height: 1.25rem;
   width: 1.25rem;
   background-color: transparent;
@@ -27,7 +27,13 @@
     linear-gradient(140deg, rgba(87, 221, 255, 1) 0%, rgba(192, 88, 243, 1) 100%) border-box;
 }
 
-/* On mouse-over, add a grey background color */
+@media (min-width: 768px) {
+  .checkmark {
+    top: 1.25rem;
+    left: 1.5rem;
+  }
+}
+
 .container:hover input~.checkmark {
   outline: transparent;
   border-radius: 100%;
@@ -40,7 +46,6 @@
   border: none;
 }
 
-/* When the checkbox is checked, add a blue background */
 .container input:checked~.checkmark {
   background: linear-gradient(140deg, rgba(87, 221, 255, 1) 0%, rgba(192, 88, 243, 1) 100%);
 }
