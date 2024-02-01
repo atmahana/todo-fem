@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import { WithAuthProp } from '@clerk/clerk-sdk-node';
 
-import { createNewTodo, deleteCompletedTodos, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos } from "../models/Todo";
+import { createNewTodo, deleteCompletedTodos, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos, updateTodoById } from "../models/Todo";
 import { clerkClient } from "../lib/clerkClient";
 
 const unauthenticated = (res: Response) => {
-  res.json({ code: 401, msg: "Session expired or invalid" });
+  res.status(401).json({ error: "Session expired or invalid" });
 }
 
 const createTodo = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    if (!req.auth.sessionId) return unauthenticated(res)
+    if (!req.auth.sessionId) return unauthenticated(res);
 
     const { text } = req.body;
 
@@ -35,7 +35,7 @@ const createTodo = async (req: WithAuthProp<Request>, res: Response) => {
 
 const getAllTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    if (!req.auth.sessionId) return unauthenticated(res)
+    if (!req.auth.sessionId) return unauthenticated(res);
 
     const user = await clerkClient.users.getUser(req.auth.userId);
 
@@ -48,7 +48,7 @@ const getAllTodos = async (req: WithAuthProp<Request>, res: Response) => {
 
 const getAllActiveTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    if (!req.auth.sessionId) return unauthenticated(res)
+    if (!req.auth.sessionId) return unauthenticated(res);
 
     const user = await clerkClient.users.getUser(req.auth.userId);
 
@@ -61,7 +61,7 @@ const getAllActiveTodos = async (req: WithAuthProp<Request>, res: Response) => {
 
 const getAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    if (!req.auth.sessionId) return unauthenticated(res)
+    if (!req.auth.sessionId) return unauthenticated(res);
 
     const user = await clerkClient.users.getUser(req.auth.userId);
 
@@ -75,7 +75,7 @@ const getAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response) =
 
 const deleteTodo = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    if (!req.auth.sessionId) return unauthenticated(res)
+    if (!req.auth.sessionId) return unauthenticated(res);
 
     const { id } = req.query;
 
@@ -87,9 +87,9 @@ const deleteTodo = async (req: WithAuthProp<Request>, res: Response) => {
   }
 }
 
-const updateCompleteTodo = async (req: WithAuthProp<Request>, res: Response) => {
+const updateTodoStatus = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    if (!req.auth.sessionId) return unauthenticated(res)
+    if (!req.auth.sessionId) return unauthenticated(res);
 
     const { id } = req.query;
 
@@ -113,9 +113,42 @@ const updateCompleteTodo = async (req: WithAuthProp<Request>, res: Response) => 
   }
 }
 
+const updateTodo = async (req: WithAuthProp<Request>, res: Response) => {
+  try {
+    if (!req.auth.sessionId) return unauthenticated(res);
+
+    const { id } = req.query;
+    const { text } = req.body;
+
+    if (!id) {
+      return res.sendStatus(400).json({ error: "Id not found" });
+    }
+
+    const todo = await getTodoById(id as string);
+
+    if (!todo) {
+      return res.status(404).json({ error: "Todo not found" });
+    }
+
+    let updatedTodo;
+
+    if (text) {
+      updatedTodo = await updateTodoById(id as string, { text });
+    } else {
+      todo.isCompleted = !todo.isCompleted;
+      updatedTodo = todo.save(); 
+    }
+
+    return res.status(200).json(updatedTodo).end();
+
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+}
+
 const deleteAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response) => {
   try {
-    if (!req.auth.sessionId) return unauthenticated(res)
+    if (!req.auth.sessionId) return unauthenticated(res);
 
     const user = await clerkClient.users.getUser(req.auth.userId);
 
@@ -127,4 +160,4 @@ const deleteAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response
   }
 }
 
-export { getAllTodos, getAllActiveTodos, getAllCompletedTodos, createTodo, deleteTodo, updateCompleteTodo, deleteAllCompletedTodos }
+export { getAllTodos, getAllActiveTodos, getAllCompletedTodos, createTodo, deleteTodo, updateTodoStatus, updateTodo, deleteAllCompletedTodos }
