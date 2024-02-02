@@ -84,7 +84,6 @@ const TodoItem: FC<TodoItemProps> = ({
           htmlFor={id}
         >
           <input
-            defaultChecked={isCompleted}
             checked={isCompleted}
             onChange={updateStatusHandler}
             type="checkbox"
