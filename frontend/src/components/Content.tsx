@@ -54,4 +54,4 @@ const Content: FC<ContentProps> = ({ type }) => {
   );
 };
 
-export { Content };
+export default Content;
