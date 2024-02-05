@@ -29,7 +29,7 @@ export const useGetTodosQuery = (type: 'all' | 'active' | 'completed') => {
 
         return res.data;
       } catch (error) {
-        throw new Error("testing");
+        throw error;
       }
     },
   });
