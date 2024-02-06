@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-      "module": "NodeNext",
-      "moduleResolution": "NodeNext",
-      "baseUrl": "src",
-      "outDir": "dist",
-      "sourceMap": true,
-      "noImplicitAny": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "baseUrl": "src",
+    "outDir": "dist",
+    "sourceMap": true,
+    "noImplicitAny": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "./api/*.ts"]
 }
