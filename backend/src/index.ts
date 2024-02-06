@@ -32,7 +32,6 @@ app.use(function (_, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
   res.setHeader('Content-Type', 'application/json');
   next();
 });
