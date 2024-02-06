@@ -1,4 +1,3 @@
-import http from 'http';
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
 import routes from './routes';
@@ -46,9 +45,7 @@ app.get('/status', async (req, res) => {
   }
 })
 
-const server = http.createServer(app);
-
-server.listen(port, async () => {
+app.listen(port, async () => {
   console.log(`\x1b[33m→ Connecting to Database...\x1b[0m`);
   await connectToDB();
   console.log(`\x1b[32m → Connected.\x1b[0m`)
@@ -56,4 +53,4 @@ server.listen(port, async () => {
   startTime = new Date();
 });
 
-export default server;
+export default app;
