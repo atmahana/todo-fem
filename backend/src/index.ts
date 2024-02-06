@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import bodyParser from 'body-parser';
-import routes from './src/routes';
-import { connectToDB } from './configs/db.config';
+import routes from './routes';
+import { connectToDB } from '../configs/db.config';
 import { LooseAuthProp } from '@clerk/clerk-sdk-node';
 
 import 'dotenv/config';
