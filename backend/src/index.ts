@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import routes from './routes';
 import { connectToDB } from '../configs/db.config';
 import { LooseAuthProp } from '@clerk/clerk-sdk-node';
+import cors from 'cors'
 
 import 'dotenv/config';
 
@@ -18,6 +19,7 @@ declare global {
 
 let startTime: Date | null = null;
 
+app.use(cors())
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -30,6 +32,7 @@ app.use(function (_, res, next) {
   res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
   res.setHeader('Content-Type', 'application/json');
   next();
 });
