@@ -55,3 +55,5 @@ server.listen(port, async () => {
   console.log(`\x1b[32mTodoFEM API listening on port ${port}\x1b[0m`);
   startTime = new Date();
 });
+
+export default server;
