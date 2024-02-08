@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { WithAuthProp } from '@clerk/clerk-sdk-node';
 
-import { createNewTodo, deleteCompletedTodos, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos, updateTodoById } from "../models/Todo";
+import { TodoModel, countActiveTodos, createNewTodo, deleteCompletedTodos, deleteTodoById, getActiveTodos, getCompletedTodos, getTodoById, getTodos, updateTodoById } from "../models/Todo";
 import { clerkClient } from "../lib/clerkClient";
 
 const unauthenticated = (res: Response) => {
@@ -39,10 +39,15 @@ const getAllTodos = async (req: WithAuthProp<Request>, res: Response) => {
 
     const user = await clerkClient.users.getUser(req.auth.userId);
 
+    if (!user || typeof user.id !== 'string' || user.id !== req.auth.userId) {
+      return res.status(403).json({ error: "Invalid user or user ID" });
+    }
+
     const todos = await getTodos(user.id);
+
     return res.status(200).json(todos);
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json(error);
   }
 };
 
@@ -52,8 +57,27 @@ const getAllActiveTodos = async (req: WithAuthProp<Request>, res: Response) => {
 
     const user = await clerkClient.users.getUser(req.auth.userId);
 
+    if (!user || typeof user.id !== 'string' || user.id !== req.auth.userId) {
+      return res.status(403).json({ error: "Invalid user or user ID" });
+    }
+
     const todos = await getActiveTodos(user.id);
+
     return res.status(200).json(todos);
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const getActiveCount = async (req: WithAuthProp<Request>, res: Response) => {
+  try {
+    if (!req.auth.sessionId) return unauthenticated(res);
+
+    const user = await clerkClient.users.getUser(req.auth.userId);
+
+    const todosCount = await countActiveTodos(user.id);
+
+    return res.status(200).json(todosCount);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -64,6 +88,10 @@ const getAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response) =
     if (!req.auth.sessionId) return unauthenticated(res);
 
     const user = await clerkClient.users.getUser(req.auth.userId);
+
+    if (!user || typeof user.id !== 'string' || user.id !== req.auth.userId) {
+      return res.status(403).json({ error: "Invalid user or user ID" });
+    }
 
     const todos = await getCompletedTodos(user.id);
 
@@ -136,7 +164,7 @@ const updateTodo = async (req: WithAuthProp<Request>, res: Response) => {
       updatedTodo = await updateTodoById(id as string, { text });
     } else {
       todo.isCompleted = !todo.isCompleted;
-      updatedTodo = todo.save(); 
+      updatedTodo = todo.save();
     }
 
     return res.status(200).json(updatedTodo).end();
@@ -160,4 +188,4 @@ const deleteAllCompletedTodos = async (req: WithAuthProp<Request>, res: Response
   }
 }
 
-export { getAllTodos, getAllActiveTodos, getAllCompletedTodos, createTodo, deleteTodo, updateTodoStatus, updateTodo, deleteAllCompletedTodos }
+export { getAllTodos, getAllActiveTodos, getAllCompletedTodos, createTodo, deleteTodo, updateTodoStatus, updateTodo, deleteAllCompletedTodos, getActiveCount }
