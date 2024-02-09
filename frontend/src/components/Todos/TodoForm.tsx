@@ -39,12 +39,14 @@ const TodoForm: FC = () => {
     <form className="relative shadow-sm" onSubmit={submitHandler}>
       <div className="border rounded-full w-5 aspect-square absolute top-1/2 -translate-y-1/2 left-5" />
       <input
+        name="create-todo-input"
         disabled={addTodoMutation.isPending}
+        autoFocus
         onChange={changeHandler}
         value={enteredText}
         type="text"
         placeholder="Create a new todo..."
-        className="px-[3.25rem] md:px-[3.75rem] py-3 md:py-5 w-full rounded-md placeholder:text-xs md:placeholder:text-lg bg-foreground border-none placeholder:text-input-muted text-input"
+        className="px-[3.25rem] md:px-[3.75rem] py-3 md:py-5 w-full rounded-md placeholder:text-sm md:placeholder:text-lg bg-foreground border-none placeholder:text-input-muted text-input focus:ring-2 focus:ring-primary"
       />
     </form>
   );

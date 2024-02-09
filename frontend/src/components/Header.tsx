@@ -36,9 +36,9 @@ const Header: FC<HeaderProps> = () => {
         <h1 className="tracking-[0.45rem] md:tracking-[1.15rem] text-3xl md:text-4xl font-bold text-white">
           TODO
         </h1>
-        <div className="flex items-center gap-3">
-          <button className="theme-switcher" onClick={toggleTheme}>
-            <img src={isDarkMode ? IconSun : IconMoon} className="w-5 md:w-6" />
+        <div className="flex items-center gap-2 md:gap-3">
+          <button className="focus:ring-2 focus:ring-primary focus-visible:outline outline-2 outline-primary rounded" onClick={toggleTheme} aria-label="Theme Switcher Button">
+            <img src={isDarkMode ? IconSun : IconMoon} className="w-6" alt={IconMoon ? "Dark mode icon" : "Light mode icon"}/>
           </button>
           {isSignedIn ? (
             <UserButton appearance={{
@@ -48,6 +48,7 @@ const Header: FC<HeaderProps> = () => {
                 formButtonPrimary: "bg-primary rounded-md",
                 footerActionLink: "text-primary",
                 formFieldInput__identifier: "rounded-md bg-background border-muted",
+                userButtonTrigger: "focus:ring-2 focus:ring-primary"
               },
             }}/>
           ) : (

@@ -51,7 +51,9 @@ const TodoItem: FC<TodoItemProps> = ({
     if (updatedText === "" || updatedText === "\n") {
       setIsError(true);
     } else {
-      updateTextMutation.mutate(updatedText);
+      if (updatedText !== text) {
+        updateTextMutation.mutate(updatedText);
+      }
       setIsError(false);
       setIsEditing(false);
     }
@@ -65,10 +67,13 @@ const TodoItem: FC<TodoItemProps> = ({
     <li className="grid grid-flow-col grid-cols-3 md:grid-cols-7 gap-3 w-full">
       {isEditing ? (
         <input
-        type="text"
+          type="text"
+          name="edit-todo-input"
           value={updatedText}
-          className={`text-sm md:text-lg whitespace-pre-wrap col-span-6 text-input bg-transparent ${
-            isError === true ? "focus:border-red-500 focus:ring-0 border-red-500" : "" 
+          className={`text-sm md:text-lg col-span-6 py-[1.125rem] whitespace-pre-wrap text-input bg-transparent ${
+            isError === true
+              ? "focus:border-red-500 focus:ring-0 border-red-500"
+              : ""
           }`}
           onChange={changeHandler}
           onBlur={updateTodoText}
@@ -79,7 +84,7 @@ const TodoItem: FC<TodoItemProps> = ({
         <label
           className={
             style.container +
-            " cursor-pointer relative col-span-6 pl-14 md:pl-16 md py-[1.125rem]"
+            " cursor-pointer relative col-span-6 pl-14 md:pl-16 py-[1.125rem]"
           }
           htmlFor={id}
         >
@@ -100,11 +105,19 @@ const TodoItem: FC<TodoItemProps> = ({
         </label>
       )}
       <div className="flex gap-3 items-start py-[1.25rem] pr-5 md:pr-6">
-        <button onClick={clickEditHandler}>
-          <img src={IconEdit} className="w-4 md:w-5" />
+        <button
+          onClick={clickEditHandler}
+          className="focus-visible:outline outline-2 outline-primary rounded"
+          aria-label="Edit Todo Content Button"
+        >
+          <img src={IconEdit} className="w-4 md:w-5" alt="Edit icon" />
         </button>
-        <button className="ml-auto" onClick={deleteHandler}>
-          <img src={IconCross} className="w-4 md:w-5" />
+        <button
+          className="ml-auto focus-visible:outline outline-2 outline-primary rounded"
+          onClick={deleteHandler}
+          aria-label="Delete Todo Button"
+        >
+          <img src={IconCross} className="w-4 md:w-5" alt="Delete icon" />
         </button>
       </div>
     </li>

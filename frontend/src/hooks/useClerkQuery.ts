@@ -3,6 +3,7 @@ import { queryClient } from "../lib/queryClient";
 import { useAuth } from "@clerk/clerk-react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Todo } from "../lib/types";
+import { useSanitizeData } from "./useSanitizeData";
 
 const BACKEND_URI = import.meta.env.VITE_BACKEND_URI;
 
@@ -20,6 +21,31 @@ export const useGetTodosQuery = (type: 'all' | 'active' | 'completed') => {
         } else {
           url = `${BACKEND_URI}/api/v1/todo`;
         }
+
+        const res = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`
+          }
+        });
+
+        const { sanitizedData } = useSanitizeData(res.data);
+
+        return sanitizedData;
+      } catch (error) {
+        throw error;
+      }
+    },
+  });
+}
+
+export const useGetActiveCountQuery = () => {
+  const { getToken } = useAuth();
+
+  return useQuery<Todo[]>({
+    queryKey: ["todos", { type: "active" }, "count"],
+    queryFn: async () => {
+      try {
+        let url = `${BACKEND_URI}/api/v1/todo/active/count`;
 
         const res = await axios.get(url, {
           headers: {

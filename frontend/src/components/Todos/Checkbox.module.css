@@ -42,12 +42,16 @@
     linear-gradient(140deg, rgba(87, 221, 255, 1) 0%, rgba(192, 88, 243, 1) 100%) border-box;
 }
 
-.container input:checked~.checkmark{
+.container input:checked~.checkmark {
   border: none;
 }
 
 .container input:checked~.checkmark {
   background: linear-gradient(140deg, rgba(87, 221, 255, 1) 0%, rgba(192, 88, 243, 1) 100%);
+}
+
+.container input:focus-visible~.checkmark {
+  outline: 2px solid hsl(var(--primary));
 }
 
 .checkmark:after {

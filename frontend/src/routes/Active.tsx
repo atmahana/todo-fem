@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import Loader from "../components/Loader";
-import Content from "../components/Content";
+import Content from "../components/Content/Content";
 
 interface ActivePageProps {}
 
