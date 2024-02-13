@@ -9,11 +9,13 @@ import SignUpPage from "./routes/SignUp";
 import CompletedPage from "./routes/Completed";
 import { ThemeProvider } from "./ThemeContext";
 import { queryClient } from "./lib/queryClient";
+import ErrorFallback from "./components/Error";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <ErrorFallback />,
     children: [
       {
         index: true,

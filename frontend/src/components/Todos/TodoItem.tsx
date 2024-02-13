@@ -70,7 +70,7 @@ const TodoItem: FC<TodoItemProps> = ({
           type="text"
           name="edit-todo-input"
           value={updatedText}
-          className={`text-sm md:text-lg col-span-6 py-[1.125rem] whitespace-pre-wrap text-input bg-transparent ${
+          className={`text-sm md:text-base col-span-6 py-[1.125rem] whitespace-pre-wrap text-input bg-transparent ${
             isError === true
               ? "focus:border-red-500 focus:ring-0 border-red-500"
               : ""
@@ -96,7 +96,7 @@ const TodoItem: FC<TodoItemProps> = ({
           />
           <span className={style.checkmark + " border-2 border-border"} />
           <p
-            className={`text-sm md:text-lg whitespace-pre-wrap w-full transition-all ${
+            className={`text-sm md:text-base whitespace-pre-wrap w-full transition-all ${
               isCompleted ? "text-muted line-through" : "text-input"
             }`}
           >

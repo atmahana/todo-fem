@@ -6,7 +6,7 @@ interface NavbarProps {}
 const Navbar: FC<NavbarProps> = () => {
   return (
     <nav className="md:max-w-[589px] 2xl:max-w-[748px] mx-auto px-6">
-      <ul className="bg-foreground w-full flex justify-center gap-5 rounded-md mt-5 py-3 font-bold shadow-sm text-sm">
+      <ul className="bg-foreground w-full flex justify-center gap-5 rounded-md mt-5 py-3 font-bold shadow-sm text-sm md:text-base">
         <li>
           <NavLink
             to="/"

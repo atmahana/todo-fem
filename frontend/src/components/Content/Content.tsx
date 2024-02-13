@@ -8,6 +8,7 @@ import {
   useGetActiveCountQuery,
   useGetTodosQuery,
 } from "../../hooks/useClerkQuery";
+import EmptyContent from "../EmptyContent";
 
 interface ContentProps {
   type: "all" | "active" | "completed";
@@ -26,7 +27,7 @@ const Content: FC<ContentProps> = ({ type }) => {
   }, []);
 
   const clickHandler = () => {
-    if(count !== todos?.length) {
+    if (count !== todos?.length) {
       mutateDeleteCompleted();
     }
   };
@@ -37,7 +38,7 @@ const Content: FC<ContentProps> = ({ type }) => {
 
   if (isError) {
     return (
-      <div className="bg-foreground rounded-md p-5 shadow-sm grid place-content-center text-input text-sm md:text-lg">
+      <div className="bg-foreground rounded-md p-5 shadow-sm grid place-content-center text-input text-sm md:text-base">
         <p>Something went wrong. Please refresh the page.</p>
       </div>
     );
@@ -46,9 +47,7 @@ const Content: FC<ContentProps> = ({ type }) => {
   return (
     <div className="flex flex-col gap-4 md:gap-6">
       {todos?.length === 0 ? (
-        <div className="bg-foreground rounded-md p-5 text-muted text-sm md:text-lg shadow-sm">
-          No task(s) available
-        </div>
+        <EmptyContent />
       ) : (
         <div className="bg-foreground overflow-hidden shadow-sm rounded-md relative">
           {isFetching || isPending ? <ProgressBar /> : null}
