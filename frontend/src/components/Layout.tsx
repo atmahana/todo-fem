@@ -17,6 +17,13 @@ const Layout: FC = () => {
         </main>
       </Suspense>
       <Navbar />
+      <div className="text-xs md:text-sm text-center absolute -translate-x-1/2 left-1/2 bottom-10">
+        Challenge by{" "}
+        <a href="https://www.frontendmentor.io/challenges/todo-app-Su1_KokOW" target="_blank" className="text-primary">
+          Frontend Mentor
+        </a>
+        . Coded by <a href="https://github.com/atmahana" className="text-primary">Zubair Adham</a>.
+      </div>
     </>
   );
 };
